@@ -2,6 +2,7 @@ import React from "react";
 import { DateRangePickerWidget } from "./DateRangePickerWidget";
 import logo from '../logo.png'
 import { DateRange } from "../types/types";
+import { Link } from "react-router-dom";
 
 interface Props {
   selectDateRange: DateRange,
@@ -11,19 +12,19 @@ interface Props {
 export const TopNavBar: React.FC<Props> = ({selectDateRange, setSelectDateRange}: Props) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark fixed-top bg-dark shadow-sm d-none d-lg-flex">
-      <a className="navvbar-brand" href='/'>
+      <Link className="navvbar-brand" to='/'>
         <img src={logo} alt="Logo" className="d-inline align-top" style={{height: "30px"}}/>
-      </a>
+      </Link>
       <ul className="navbar-nav flex-row mr-auto">
         <li className="nav-item">
-          <a href="/" className="nav-link">
+          <Link to="/" className="nav-link">
             Home
-          </a>
+          </Link>
         </li>
         <li className="nav-item">
-          <a href="/favorite" className="nav-link">
+          <Link to="/favorite" className="nav-link">
             Favorite
-          </a>
+          </Link>
         </li>
       </ul>
       <div className="d-flex align-items-center">

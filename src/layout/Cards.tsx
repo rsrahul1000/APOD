@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { favorate } from "../redux/redux-toolkit";
 import { imageData, State } from "../types/types";
 import { Modal } from "./Modal";
+import NoData from "../assets/images/empty.svg";
 
 interface Props {
   allImageData: imageData[];
@@ -11,11 +14,29 @@ export const Cards: React.FC<Props> = ({
   allImageData,
   fetchStatus,
 }: Props) => {
+  const dispatch = useDispatch();
   const [openedModal, setOpenedModal] = useState(null as null | string);
   const closeModal = () => {
     setOpenedModal(null);
-  }
-  if (fetchStatus !== "success") return <div className="p-5">Loading</div>;
+  };
+
+  const handleLike = (data: imageData) => {
+    dispatch(favorate({ data }));
+  };
+
+  
+  if (fetchStatus === "success" && allImageData.length === 0)
+    return (
+      <div className="row m-0 mt-5 pt-3">
+        <div className="justify-content-center">
+          <img
+            src={NoData}
+            alt="No Data"
+            className="card-img mx-auto my-auto w-50"
+          />
+        </div>
+      </div>
+    );
   else
     return (
       <>
@@ -65,9 +86,13 @@ export const Cards: React.FC<Props> = ({
                     </div>
                   </div>
                   <div className="card-footer d-flex justify-content-between">
-                    <button type="button" className="btn btn-secondary">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => handleLike(data)}
+                    >
                       <i className="material-icons align-middle">
-                        favorite_border
+                        {data.like ? "favorite" : "favorite_border"}
                       </i>
                     </button>
                     <button
@@ -79,7 +104,13 @@ export const Cards: React.FC<Props> = ({
                     >
                       Read More
                     </button>
-                    {data.url == openedModal && <Modal data={data} key={data.url} closeModal={closeModal} /> }
+                    {data.url == openedModal && (
+                      <Modal
+                        data={data}
+                        key={data.url}
+                        closeModal={closeModal}
+                      />
+                    )}
                   </div>
                 </div>
               </div>

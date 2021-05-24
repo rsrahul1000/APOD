@@ -7,6 +7,7 @@ export interface imageData {
   service_version?: string;
   title: string;
   url: string;
+  like?: boolean;
 }
 
 export interface DateRange {
@@ -16,5 +17,6 @@ export interface DateRange {
 
 export interface State {
   allImageData: imageData[];
+  favorateData: imageData[];
   status: string | null;
 }
