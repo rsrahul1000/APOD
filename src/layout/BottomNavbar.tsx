@@ -6,7 +6,7 @@ interface Props {}
 export const BottomNavbar: React.FC<Props> = (props: Props) => {
   return (
     <div
-      className="position-fixed w-100 shadow d-lg-none bg-dark"
+      className="position-fixed absolute w-100 shadow d-lg-none bg-dark"
       style={{ bottom: 0, zIndex: 9999, cursor: "pointer" }}
     >
       <div className="d-flex flex-row m-0 text-center adaptive-back-grad pt-1">
