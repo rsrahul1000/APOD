@@ -1,4 +1,5 @@
 import React from "react";
+import { DateRangePickerWidget } from "./DateRangePickerWidget";
 
 interface Props {}
 
@@ -16,13 +17,14 @@ export const BottomNavbar: React.FC<Props> = (props: Props) => {
             <small>Home</small>
           </a>
         </div>
-        <div className="flex-fill order-first w-100">
-          <a className="text-decoration-none text-white" href="">
+        {/* <div className="flex-fill order-first w-100 ">
+          {/* <a className="text-decoration-none text-white" href="">
             <i className="material-icons align-middle">date_range</i>
             <br />
             <small>Date Range</small>
-          </a>
-        </div>
+          </a> 
+          <DateRangePickerWidget />
+        </div> */}
         <div className="flex-fill order-first w-100">
           <a className="text-decoration-none text-white" href="">
             <i className="material-icons align-middle">favorite</i>

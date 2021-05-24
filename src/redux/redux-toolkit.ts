@@ -55,9 +55,9 @@ const allImageInitialDataType: allImageDataType = {
   status: null,
 };
 
-function custom_sort(a: imageData, b: imageData) {
-  return new Date(a.date).getDate() - new Date(b.date).getDate();
-}
+// function custom_sort(a: imageData, b: imageData) {
+//   return new Date(a.date).getDate() - new Date(b.date).getDate();
+// }
 
 const allImageDataSlice = createSlice({
   name: "allImageData",

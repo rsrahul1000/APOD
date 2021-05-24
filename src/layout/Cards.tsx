@@ -1,7 +1,4 @@
-import { unwrapResult } from "@reduxjs/toolkit";
-import React, { useEffect } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { fetchLatestImages } from "../redux/redux-toolkit";
+import React from "react";
 import { imageData, State } from "../types/types";
 
 interface Props {
@@ -20,24 +17,24 @@ export const Cards: React.FC<Props> = ({
       allImageData &&
       allImageData.map((data) => {
         return (
-          <div className="col-lg-4 col-md-6 col-sm-12 mb-2 p-2 post-preview d-flex">
+          <div className="col-lg-4 col-md-6 col-sm-12 mb-2 p-2 post-preview d-flex" key={data.url}>
             <div className="card post-content">
               <div className="card-body">
                 <div className="d-flex justify-content-between">
-                  <h3 className="card-title text-wrap text-break">
+                  <h4 className="card-title text-wrap text-break">
                     {data.title}
-                  </h3>
+                  </h4>
                 </div>
-                <p className="card-text" style={{ marginBottom: "-13px" }}>
-                  <div className="d-flex">
+                <p className="d-flex card-text" style={{ marginBottom: "-13px" }}>
+                  {/* <div className=""> */}
                     <small
-                      className="text-muted text-truncate py-1"
+                      className="text-muted text-truncate"
                       style={{ maxWidth: "33%" }}
                     >
                       {data.date}
                     </small>
                     {data.copyright && (
-                      <div>
+                      <>
                         <small className="px-2">|</small>
                         <small
                           className="text-muted text-truncate"
@@ -45,9 +42,9 @@ export const Cards: React.FC<Props> = ({
                         >
                           {data.copyright}
                         </small>
-                      </div>
+                      </>
                     )}
-                  </div>
+                  {/* </div> */}
                 </p>
                 <div className="justify-content-between">
                   <img
