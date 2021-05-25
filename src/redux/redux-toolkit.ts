@@ -48,6 +48,10 @@ const allImageDataSlice = createSlice({
         // imgData;
       }
     },
+    getAllFavorite: (state) => {
+      state.favorateData = JSON.parse(localStorage.getItem("favorate")!) || [];
+      state.status = "success";
+    },
     favorate: (state, { payload }: PayloadAction<{ data: imageData }>) => {
       const imgData = state.allImageData.find(
         (img) => img.url === payload.data.url
@@ -101,7 +105,7 @@ const allImageDataSlice = createSlice({
   },
 });
 
-export const { favorate: favorate } = allImageDataSlice.actions;
+export const { favorate: favorate, getAllFavorite: getAllFavorite } = allImageDataSlice.actions;
 
 const reducer = {
   allImageData: allImageDataSlice.reducer,

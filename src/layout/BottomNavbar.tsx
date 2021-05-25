@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { DateRangePickerWidget } from "./DateRangePickerWidget";
 
 interface Props {}
@@ -12,18 +12,18 @@ export const BottomNavbar: React.FC<Props> = (props: Props) => {
     >
       <div className="d-flex flex-row m-0 text-center adaptive-back-grad pt-1">
         <div className="flex-fill order-first w-100">
-          <a className="text-decoration-none text-white" href="/">
+          <NavLink className="text-decoration-none text-white" to="/" exact={true}>
             <i className="material-icons align-middle">home</i>
             <br />
             <small>Home</small>
-          </a>
+          </NavLink>
         </div>
         <div className="flex-fill order-first w-100">
-          <Link className="text-decoration-none text-white" to="/favorite">
+          <NavLink className="text-decoration-none text-white" to="/favorite">
             <i className="material-icons align-middle">favorite</i>
             <br />
             <small>Favorite</small>
-          </Link>
+          </NavLink>
         </div>
       </div>
     </div>

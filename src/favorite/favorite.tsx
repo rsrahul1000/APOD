@@ -5,6 +5,7 @@ import { Cards } from "../layout/Cards";
 import { TopNavBar } from "../layout/TopNavBar";
 import { TopNavBarMobile } from "../layout/TopNavBarMobile";
 import { imageData } from "../types/types";
+import { getAllFavorite } from "../redux/redux-toolkit";
 
 interface Props {}
 
@@ -19,7 +20,8 @@ export const Favorate: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     // favorateImageData = JSON.parse(localStorage.getItem('favorite')!) || [];
-  }, [favorateImageData]);
+    dispatch(getAllFavorite());
+  }, []);
 
   const [selectDateRange, setSelectDateRange] = useState({
     start: moment().subtract(29, "days"),
