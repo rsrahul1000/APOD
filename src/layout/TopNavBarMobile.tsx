@@ -14,18 +14,6 @@ export const TopNavBarMobile = ({
 }: Props) => {
   return (
     <nav className="navbar navbar-dark d-xxl-none d-xl-none d-lg-none fixed-top bg-dark shadow-sm">
-      {/* <a
-        className="navbar-brand search-toggle"
-        href="/"
-        style={{ display: "block" }}
-      >
-        <img
-          src="{{ url_for('static', filename='assets/images/persistent-systems-header-logo.png') }}"
-          width="14"
-          className="d-inline-block align-top"
-          alt=""
-        />
-      </a> */}
       <a className="navvbar-brand" href="/">
         <img
           src={logo}

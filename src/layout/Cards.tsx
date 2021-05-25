@@ -66,6 +66,7 @@ export const Cards: React.FC<Props> = ({
           alt="No Data"
           className="card-img mx-auto my-auto w-50"
         />
+         <h4 className="mt-2">No Data</h4>
       </div>
     );
   else

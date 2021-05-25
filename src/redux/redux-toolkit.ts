@@ -100,6 +100,7 @@ const allImageDataSlice = createSlice({
       state.status = "loading";
     },
     [fetchLatestImages.fulfilled.type]: (state, action) => {
+      // If received an error due to future date
       if (action.payload?.code > 0) {
         state.error = action.payload;
         state.allImageData = [];
@@ -109,18 +110,17 @@ const allImageDataSlice = createSlice({
           (a: imageData, b: imageData) =>
             new Date(a.date).getDate() - new Date(b.date).getDate()
         );
-        state.allImageData = state.allImageData.concat(action.payload);
-        state.allImageData = state.allImageData.reduce<imageData[]>(
-          (acc, current: imageData) => {
+        // Make sure no duplicate data is present
+        state.allImageData = state.allImageData
+          .concat(action.payload)
+          .reduce<imageData[]>((acc, current: imageData) => {
             const x = acc.find((item) => item.url === current.url);
             if (!x) {
               return acc.concat([current]);
             } else {
               return acc;
             }
-          },
-          []
-        );
+          }, []);
       }
       state.status = "success";
     },
