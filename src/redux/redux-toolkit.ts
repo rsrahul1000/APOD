@@ -9,10 +9,17 @@ import {
 import { DateRange, imageData } from "../types/types";
 import logger from "redux-logger";
 
+type ErrorReveive = {
+  code: number;
+  msg: string;
+  service_version: string;
+};
+
 type allImageDataType = {
   allImageData: imageData[];
   favorateData: imageData[];
   status: string | null;
+  error?: ErrorReveive | null;
 };
 
 const BASE_URL =
@@ -24,7 +31,7 @@ export const fetchLatestImages = createAsyncThunk(
   async () => {
     return fetch(`${BASE_URL}&count=10`)
       .then((res) => res.json())
-      .catch((error) => console.log(error));
+      .catch((error) => error.json());
   }
 );
 
@@ -38,7 +45,7 @@ export const fetchDateRangeImages = createAsyncThunk(
       )}&end_date=${end.format("YYYY-MM-DD")}`
     )
       .then((res) => res.json())
-      .catch((error) => console.log(error));
+      .catch((error) => error.json());
   }
 );
 
@@ -93,19 +100,28 @@ const allImageDataSlice = createSlice({
       state.status = "loading";
     },
     [fetchLatestImages.fulfilled.type]: (state, action) => {
-      action.payload.sort(
-        (a: imageData, b: imageData) =>
-          new Date(a.date).getDate() - new Date(b.date).getDate()
-      );
-      state.allImageData = state.allImageData.concat(action.payload);
-      state.allImageData = state.allImageData.reduce<imageData[]>((acc, current:imageData) => {
-        const x = acc.find(item => item.url === current.url);
-        if (!x) {
-          return acc.concat([current]);
-        } else {
-          return acc;
-        }
-      }, []);
+      if (action.payload?.code > 0) {
+        state.error = action.payload;
+        state.allImageData = [];
+      } else {
+        state.error = null;
+        action.payload.sort(
+          (a: imageData, b: imageData) =>
+            new Date(a.date).getDate() - new Date(b.date).getDate()
+        );
+        state.allImageData = state.allImageData.concat(action.payload);
+        state.allImageData = state.allImageData.reduce<imageData[]>(
+          (acc, current: imageData) => {
+            const x = acc.find((item) => item.url === current.url);
+            if (!x) {
+              return acc.concat([current]);
+            } else {
+              return acc;
+            }
+          },
+          []
+        );
+      }
       state.status = "success";
     },
     [fetchLatestImages.rejected.type]: (state, action) => {
@@ -115,7 +131,13 @@ const allImageDataSlice = createSlice({
       state.status = "loading";
     },
     [fetchDateRangeImages.fulfilled.type]: (state, action) => {
-      state.allImageData = action.payload;
+      if (action.payload?.code > 0) {
+        state.error = action.payload;
+        state.allImageData = [];
+      } else {
+        state.error = null;
+        state.allImageData = action.payload;
+      }
       state.status = "success";
     },
     [fetchDateRangeImages.rejected.type]: (state) => {

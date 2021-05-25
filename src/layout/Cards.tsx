@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { favorate } from "../redux/redux-toolkit";
-import { imageData } from "../types/types";
+import { ErrorReveive, imageData } from "../types/types";
 import { Modal } from "./Modal";
 import NoData from "../assets/images/empty.svg";
 import moment from "moment";
@@ -10,18 +10,14 @@ interface Props {
   allImageData: imageData[];
   fetchStatus: string | null;
   isFetching?: boolean;
-}
-
-interface ErrorRecieve {
-  code: number,
-  msg: string,
-  service_version: string,
+  error?: ErrorReveive | null;
 }
 
 export const Cards: React.FC<Props> = ({
   allImageData,
   fetchStatus,
   isFetching,
+  error,
 }: Props) => {
   const dispatch = useDispatch();
   const [openedModal, setOpenedModal] = useState(null as null | string);
@@ -46,27 +42,41 @@ export const Cards: React.FC<Props> = ({
     var match = url.match(regExp);
     return match ? match[3] : "";
   };
-
-  if (fetchStatus === "success" && allImageData.length === 0 && !isFetching)
+  if (error) {
     return (
-      <div className="row m-0 mt-5 pt-3">
-        <div className="justify-content-center">
-          <img
-            src={NoData}
-            alt="No Data"
-            className="card-img mx-auto my-auto w-50"
-          />
-        </div>
+      <div className="justify-content-center">
+        <img
+          src={NoData}
+          alt="No Data"
+          className="card-img mx-auto my-auto w-50"
+        />
+        <h3 className="mt-2">{error.code}</h3>
+        <p className="strong mx-auto">{error.msg}</p>
+      </div>
+    );
+  } else if (
+    fetchStatus === "success" &&
+    allImageData.length === 0 &&
+    !isFetching
+  )
+    return (
+      <div className="justify-content-center">
+        <img
+          src={NoData}
+          alt="No Data"
+          className="card-img mx-auto my-auto w-50"
+        />
       </div>
     );
   else
     return (
       <>
-        { allImageData && allImageData.length > 0 &&
+        {allImageData &&
+          allImageData.length > 0 &&
           allImageData.map((data) => {
             return (
               <div
-                className="col-lg-4 col-md-6 col-sm-12 mb-2 p-2 post-preview  d-flex align-items-stretch justify-content-center"
+                className="col-lg-4 col-md-6 col-sm-12 mb-2 p-2 post-preview d-flex align-items-stretch justify-content-center"
                 key={data.url}>
                 <div className="card post-content d-flex align-items-stretch">
                   <div className="card-body">

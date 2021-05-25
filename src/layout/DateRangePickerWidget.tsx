@@ -35,12 +35,12 @@ export const DateRangePickerWidget: React.FC<Props> = ({
             moment().subtract(1, "days").toDate(),
           ],
           "Last 7 Days": [
-            moment().subtract(6, "days").toDate(),
-            moment().toDate(),
+            moment().subtract(7, "days").toDate(),
+            moment().subtract(1, "days").toDate(),
           ],
           "Last 30 Days": [
-            moment().subtract(29, "days").toDate(),
-            moment().toDate(),
+            moment().subtract(30, "days").toDate(),
+            moment().subtract(1, "days").toDate(),
           ],
           "This Month": [
             moment().startOf("month").toDate(),

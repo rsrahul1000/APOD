@@ -15,11 +15,11 @@ export interface DateRange {
   end: moment.Moment;
 }
 
-interface ErrorRecieve {
-  code: number,
-  msg: string,
-  service_version: string,
-}
+export interface ErrorReveive {
+  code: number;
+  msg: string;
+  service_version: string;
+};
 
 export interface State {
   allImageData: imageData[] | ErrorRecieve;

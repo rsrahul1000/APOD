@@ -35,12 +35,14 @@ export const TopNavBarMobile = ({
         />
       </a>
 
-      <div className="ml-auto order-0">
-        <DateRangePickerWidget
-          selectDateRange={selectDateRange}
-          setSelectDateRange={setSelectDateRange}
-        />
-      </div>
+      {window.location.pathname !== "/favorite" && (
+        <div className="ml-auto order-0">
+          <DateRangePickerWidget
+            selectDateRange={selectDateRange}
+            setSelectDateRange={setSelectDateRange}
+          />
+        </div>
+      )}
       <div id="dateBarMobile" className="w-100 allign"></div>
     </nav>
   );

@@ -8,7 +8,7 @@ import {
   fetchLatestImages,
   fetchDateRangeImages,
 } from "../redux/redux-toolkit";
-import { imageData } from "../types/types";
+import { ErrorReveive, imageData } from "../types/types";
 import GridLoader from "react-spinners/GridLoader";
 import CircleLoader from "react-spinners/CircleLoader";
 
@@ -17,6 +17,9 @@ interface Props {}
 export const Home: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
 
+  const error = useSelector(
+    (state: any) => state.allImageData.error
+  ) as null | ErrorReveive;
   const fetchStatus = useSelector((state: any) => state.allImageData.status) as
     | string
     | null;
@@ -85,17 +88,14 @@ export const Home: React.FC<Props> = (props: Props) => {
       ) : (
         <>
           <div className="row m-0 mt-5 pt-3">
-            <div className="col-xl-12 mx-auto">
+            <div className="col-lg-9 mx-auto">
               <div className="row m-0">
-                <div className="col-lg-9 mx-auto p-0">
-                  <div className="row">
-                    <Cards
-                      allImageData={allImageData}
-                      fetchStatus={fetchStatus}
-                      isFetching={isFetching}
-                    />
-                  </div>
-                </div>
+                <Cards
+                  allImageData={allImageData}
+                  fetchStatus={fetchStatus}
+                  isFetching={isFetching}
+                  error={error}
+                />
               </div>
             </div>
           </div>

@@ -35,12 +35,14 @@ export const TopNavBar: React.FC<Props> = ({
           </NavLink>
         </li>
       </ul>
-      <div className="d-flex align-items-center">
-        <DateRangePickerWidget
-          selectDateRange={selectDateRange}
-          setSelectDateRange={setSelectDateRange}
-        />
-      </div>
+      {window.location.pathname !== "/favorite" && (
+        <div className="d-flex align-items-center">
+          <DateRangePickerWidget
+            selectDateRange={selectDateRange}
+            setSelectDateRange={setSelectDateRange}
+          />
+        </div>
+      )}
     </nav>
   );
 };
