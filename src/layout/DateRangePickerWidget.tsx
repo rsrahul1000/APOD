@@ -1,14 +1,17 @@
 import moment from "moment";
-import React, { useState } from "react";
+import React from "react";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import { DateRange } from "../types/types";
 
 interface Props {
-  selectDateRange: DateRange,
-  setSelectDateRange: React.Dispatch<React.SetStateAction<DateRange>>
+  selectDateRange: DateRange;
+  setSelectDateRange: React.Dispatch<React.SetStateAction<DateRange>>;
 }
 
-export const DateRangePickerWidget: React.FC<Props> = ({selectDateRange, setSelectDateRange}: Props) => {
+export const DateRangePickerWidget: React.FC<Props> = ({
+  selectDateRange,
+  setSelectDateRange,
+}: Props) => {
   const handleDateRangeSelectionCallback = (
     start: moment.Moment,
     end: moment.Moment
@@ -49,8 +52,7 @@ export const DateRangePickerWidget: React.FC<Props> = ({selectDateRange, setSele
           ],
         },
       }}
-      onCallback={handleDateRangeSelectionCallback}
-    >
+      onCallback={handleDateRangeSelectionCallback}>
       <div
         id="reportrange"
         className="col-auto ml-sm-auto"
@@ -60,8 +62,7 @@ export const DateRangePickerWidget: React.FC<Props> = ({selectDateRange, setSele
           padding: "5px 10px",
           border: "1px solid #ccc",
           width: "fit-content",
-        }}
-      >
+        }}>
         <i className="fa fa-calendar"></i>&nbsp;
         <span>{label}</span> <i className="fa fa-caret-down"></i>
       </div>

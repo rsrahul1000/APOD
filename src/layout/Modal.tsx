@@ -1,3 +1,4 @@
+import moment from "moment";
 import React from "react";
 import { imageData } from "../types/types";
 
@@ -14,9 +15,10 @@ export const Modal: React.FC<Props> = ({ data, closeModal }: Props) => {
       tabIndex={-1}
       role="dialog"
       aria-labelledby="apodDataModalLongTitle"
-      aria-hidden="true"
-    >
-      <div className="modal-dialog modal-dialog-centered modal-lg pb-5" role="document">
+      aria-hidden="true">
+      <div
+        className="modal-dialog modal-dialog-centered modal-lg pb-5"
+        role="document">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="apodDataModalLongTitle">
@@ -26,8 +28,7 @@ export const Modal: React.FC<Props> = ({ data, closeModal }: Props) => {
               type="button"
               className="close"
               data-dismiss="modal"
-              aria-label="Close"
-            >
+              aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -36,35 +37,48 @@ export const Modal: React.FC<Props> = ({ data, closeModal }: Props) => {
               <div className="card-body">
                 <p
                   className="d-flex card-text"
-                  style={{ marginBottom: "-13px" }}
-                >
+                  style={{ marginBottom: "-13px" }}>
                   <small
                     className="text-muted text-truncate"
-                    style={{ maxWidth: "33%" }}
-                  >
-                    {data.date}
+                    style={{ maxWidth: "33%" }}>
+                    {moment(data.date).format("LL")}
                   </small>
                   {data.copyright && (
                     <>
                       <small className="px-2">|</small>
                       <small
                         className="text-muted text-truncate"
-                        style={{ maxWidth: "33%" }}
-                      >
+                        style={{ maxWidth: "33%" }}>
                         {data.copyright}
                       </small>
                     </>
                   )}
                 </p>
                 <div className="justify-content-between">
-                      <img
-                        src={data.hdurl}
-                        alt=""
-                        className="card-img w-50 mx-auto p-4"
+                  {data.media_type === "video" ? (
+                    <div className="video-responsive">
+                      <iframe
+                        className="py-4 mt-2"
+                        src={data.url}
+                        frameBorder="0"
+                        allow="autoplay; encrypted-media"
+                        allowFullScreen
+                        title="video"
                       />
-                    </div> 
-                <p className="card-text w-100" id="previewPost" style={{textAlign:"justify"}}>
-                    {data.explanation}
+                    </div>
+                  ) : (
+                    <img
+                      src={data.hdurl}
+                      alt=""
+                      className="card-img w-50 mx-auto p-4"
+                    />
+                  )}
+                </div>
+                <p
+                  className="card-text w-100"
+                  id="previewPost"
+                  style={{ textAlign: "justify" }}>
+                  {data.explanation}
                 </p>
               </div>
             </div>
@@ -74,8 +88,7 @@ export const Modal: React.FC<Props> = ({ data, closeModal }: Props) => {
               type="button"
               className="btn btn-secondary"
               data-dismiss="modal"
-              onClick={() => closeModal()}
-            >
+              onClick={() => closeModal()}>
               Close
             </button>
           </div>

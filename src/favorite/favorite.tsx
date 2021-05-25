@@ -24,7 +24,7 @@ export const Favorate: React.FC<Props> = (props: Props) => {
   }, []);
 
   const [selectDateRange, setSelectDateRange] = useState({
-    start: moment().subtract(29, "days"),
+    start: moment(), //.subtract(29, "days"),
     end: moment(),
   });
 

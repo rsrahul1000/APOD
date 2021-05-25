@@ -1,18 +1,27 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { favorate } from "../redux/redux-toolkit";
-import { imageData, State } from "../types/types";
+import { imageData } from "../types/types";
 import { Modal } from "./Modal";
 import NoData from "../assets/images/empty.svg";
+import moment from "moment";
 
 interface Props {
   allImageData: imageData[];
   fetchStatus: string | null;
+  isFetching?: boolean;
+}
+
+interface ErrorRecieve {
+  code: number,
+  msg: string,
+  service_version: string,
 }
 
 export const Cards: React.FC<Props> = ({
   allImageData,
   fetchStatus,
+  isFetching,
 }: Props) => {
   const dispatch = useDispatch();
   const [openedModal, setOpenedModal] = useState(null as null | string);
@@ -24,8 +33,21 @@ export const Cards: React.FC<Props> = ({
     dispatch(favorate({ data }));
   };
 
-  
-  if (fetchStatus === "success" && allImageData.length === 0)
+  const youtube_parser = (url: string) => {
+    var regExp =
+      /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    var match = url.match(regExp);
+    return match && match[7].length === 11 ? match[7] : "";
+  };
+
+  const vimeo_parser = (url: string) => {
+    var regExp =
+      /https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/;
+    var match = url.match(regExp);
+    return match ? match[3] : "";
+  };
+
+  if (fetchStatus === "success" && allImageData.length === 0 && !isFetching)
     return (
       <div className="row m-0 mt-5 pt-3">
         <div className="justify-content-center">
@@ -40,15 +62,13 @@ export const Cards: React.FC<Props> = ({
   else
     return (
       <>
-        {fetchStatus === "success" &&
-          allImageData &&
-          allImageData.map((data, index) => {
+        { allImageData && allImageData.length > 0 &&
+          allImageData.map((data) => {
             return (
               <div
-                className="col-lg-4 col-md-6 col-sm-12 mb-2 p-2 post-preview d-flex"
-                key={data.url}
-              >
-                <div className="card post-content">
+                className="col-lg-4 col-md-6 col-sm-12 mb-2 p-2 post-preview  d-flex align-items-stretch justify-content-center"
+                key={data.url}>
+                <div className="card post-content d-flex align-items-stretch">
                   <div className="card-body">
                     <div className="d-flex justify-content-between">
                       <h4 className="card-title text-wrap text-break">
@@ -57,29 +77,43 @@ export const Cards: React.FC<Props> = ({
                     </div>
                     <p
                       className="d-flex card-text"
-                      style={{ marginBottom: "-13px" }}
-                    >
+                      style={{ marginBottom: "-13px" }}>
                       <small
                         className="text-muted text-truncate"
-                        style={{ maxWidth: "33%" }}
-                      >
-                        {data.date}
+                        style={{ maxWidth: "33%" }}>
+                        {moment(data.date).format("LL")}
                       </small>
                       {data.copyright && (
                         <>
                           <small className="px-2">|</small>
                           <small
                             className="text-muted text-truncate"
-                            style={{ maxWidth: "33%" }}
-                          >
+                            style={{ maxWidth: "33%" }}>
                             {data.copyright}
                           </small>
                         </>
                       )}
+                      <small className="px-2">|</small>
+                      <small
+                        className="text-muted text-truncate"
+                        style={{ maxWidth: "33%" }}>
+                        {data.media_type}
+                      </small>
                     </p>
                     <div className="justify-content-between">
                       <img
-                        src={data.url}
+                        src={
+                          data.media_type === "video" &&
+                          youtube_parser(data.url) !== ""
+                            ? `https://img.youtube.com/vi/${youtube_parser(
+                                data.url
+                              )}/0.jpg`
+                            : vimeo_parser(data.url) !== ""
+                            ? `https://vumbnail.com/${vimeo_parser(
+                                data.url
+                              )}.jpg`
+                            : data.url
+                        }
                         alt=""
                         className="card-img w-50 mx-auto p-4"
                       />
@@ -89,8 +123,7 @@ export const Cards: React.FC<Props> = ({
                     <button
                       type="button"
                       className="btn btn-secondary"
-                      onClick={() => handleLike(data)}
-                    >
+                      onClick={() => handleLike(data)}>
                       <i className="material-icons align-middle">
                         {data.like ? "favorite" : "favorite_border"}
                       </i>
@@ -100,11 +133,10 @@ export const Cards: React.FC<Props> = ({
                       className="btn blog-btn-grad btn-primary"
                       data-toggle="modal"
                       data-target="#apodDataModal"
-                      onClick={() => setOpenedModal(data.url)}
-                    >
+                      onClick={() => setOpenedModal(data.url)}>
                       Read More
                     </button>
-                    {data.url == openedModal && (
+                    {data.url === openedModal && (
                       <Modal
                         data={data}
                         key={data.url}
